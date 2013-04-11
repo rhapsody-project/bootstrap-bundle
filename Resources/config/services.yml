@@ -1,0 +1,5 @@
+services:
+  rhapsody.bootstrap.twig.rhapsody_bootstrap_twig_extension:
+    class: 'Rhapsody\BootstrapBundle\Twig\RhapsodyBootstrapTwigExtension'
+    tags:
+      - { name: "twig.extension" }

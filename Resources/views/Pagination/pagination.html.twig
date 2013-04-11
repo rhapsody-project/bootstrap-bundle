@@ -1,0 +1,92 @@
+{#
+ #
+ #}
+
+{# //////////////////////////////////////////////////////////////////////////
+ 	PAGINATION:
+
+ 	Generates the content that describes a Bootstrap pagination widget.
+
+ 	@param mixed args["index"] Required. The current index of the search.
+ 	@param array args["item"]
+ 	@param mixed args["results"] Required.
+ 	@param string args["route"] Required. The Symfony route representing the URL that clicked
+ 		links will evaluate.
+
+ 	@param string query Optional. Additional query parameters that will be
+ 		applied to the route when a link is clicked.
+ 	@param mixed results
+ 	@param mixed results_per_page
+ 	@param mixed pages_to_show
+ #}
+{% macro paginate(args) %}
+	{% set route        = args.route %}
+	{% set index        = args.index %}
+	{% set results      = args.results %}
+	{% set batch_size   = args.batchSize|default(10) %}
+	{% set item         = args.itemTemplate|default('RhapsodyBootstrapBundle:Pagination:item.html.twig') %}
+	{% set item_class   = args.itemClass|default('') %}
+	{% set page_name    = args.pageName|default('page') %}
+	{% set query        = args.query|default([]) %}
+	{% set show_last    = args.showLast|default(true) %}
+	{% set show_first   = args.showFirst|default(true) %}
+	{% set show_next    = args.showNext|default(true) %}
+	{% set show_pages   = args.pages|default(5) %}
+	{% set show_prev    = args.showPrev|default(true) %}
+	{% set widget_class = args.widgetClass|default('') %}
+
+	{% set cur_page   = 1 + (index / batch_size)|floor %}
+	{% set last_page  = 1 + (results / batch_size)|floor %}
+	{% set has_prev   = (index - batch_size) > 0 %}
+	{% set prev       = index - batch_size %}
+	{% set has_next   = (index + batch_size) < results %}
+	{% set next       = index + batch_size %}
+
+	{% set pages = padded_range(cur_page, show_pages, 'center', 1, last_page) %}
+
+	{% if results > 0 %}
+	<div class="pagination ">
+		<ul>
+			{% if show_prev %}
+				{%
+					include item with {
+						route: route,
+						query: query,
+						index: cur_page - 1,
+						page: cur_page,
+						page_attr: page_name,
+						disabled: not has_prev,
+						text: 'Previous'
+					} only
+				%}
+			{% endif %}
+
+			{% for p in pages %}
+				{%
+					include item with {
+						route: route,
+						query: query,
+						index: p,
+						page: cur_page,
+						page_attr: page_name,
+					} only
+				%}
+			{% endfor %}
+
+			{% if show_next %}
+				{%
+					include item with {
+						route: route,
+						query: query,
+						index: cur_page + 1,
+						page: cur_page,
+						page_attr: page_name,
+						disabled: not has_next,
+						text: 'Next'
+					} only
+				%}
+			{% endif %}
+		</ul>
+	</div>
+	{% endif %}
+{% endmacro %}

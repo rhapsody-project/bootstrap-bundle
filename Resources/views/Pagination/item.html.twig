@@ -1,0 +1,11 @@
+{#
+
+ #}
+
+<li class="{{ name is defined ? name : '' }} {{ index == page ? 'active' : '' }} {{ disabled is defined and disabled ? 'disabled' : '' }}">
+    {% if index != page and (disabled is not defined or not disabled) %}
+        <a href="{{ path(route, query | merge({(page_attr): index})) }}">{{ text is defined ? text : index }}</a>
+    {% else %}
+        <span>{{ text is defined ? text : index }}</span>
+    {% endif %}
+</li>

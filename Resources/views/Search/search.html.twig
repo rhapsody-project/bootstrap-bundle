@@ -1,0 +1,33 @@
+{#
+ #
+ #}
+
+{# //////////////////////////////////////////////////////////////////////////
+ 	FILTER SEARCH:
+
+ #}
+{% macro filter_search(args) %}
+	{% set search_id        = args.id|default('') %}
+	{% set search_class     = args.class|default('') %}
+	{% set icon_class       = args.iconClass|default('icon-search') %}
+	{% set placeholder_text = args.placeholder|default('Search') %}
+	<div {% if search_id is not empty %}id="{{ search_id }}"{% endif %} class="search {{ search_class }}">
+		<input type="text" placeholder="{{ placeholder_text }}" />
+		<button class="btn" type="button"><span class="icon {{ icon_class }}"></span></button>
+	</div>
+{% endmacro %}
+
+{# /////////////////////////////////////////////////////////////////////////
+	NAVBAR SEARCH:
+
+ #}
+{% macro navbar_search(args) %}
+	{% set search_id        = args.id|default('') %}
+	{% set search_class     = args.class|default('input-append') %}
+	{% set icon_class       = args.iconClass|default('icon-search') %}
+	{% set placeholder_text = args.placeholder|default('Search') %}
+	<div {% if search_id is not empty %}id="{{ search_id }}"{% endif %} class="search {{ search_class }}">
+		<input type="text" placeholder="{{ placeholder_text }}" />
+		<span class="add-on"><span class="{{ icon_class }}"></span></span>
+	</div>
+{% endmacro %}
